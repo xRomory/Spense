@@ -1,0 +1,74 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+/* @import url('https://fonts.googleapis.com/css2?family=BBH+Bogle&family=Khula:wght@300;400;600;700;800&family=Koulen&display=swap'); */
+
+/* @custom-variant dark (&:is(.dark *)); */
+
+@theme inline {
+  --font-logo: 'BBH Bogle';
+  --font-khula: 'Khula';
+  --font-koulen: 'Koulen';
+
+  /* Color Theme */
+  --color-background: var(--background);
+  --color-destructive: var(--destructive);
+  --color-primary: var(--primary);
+
+  /* Text */
+  --color-foreground: var(--foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+
+  /* Card */
+  --color-card: var(--card);
+  --color-secondary-card: var(--secondary-card);
+  --color-card-foreground: var(--card-foreground);
+
+  /* Border */
+  --color-border: var(--border);
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-muted: var(--muted);
+  --color-secondary: var(--secondary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+}
+
+:root {
+  /* Color Theme */
+  --background: #000A16;
+  --primary: #00DC54;
+  --destructive: #FA3232;
+
+  /* Text */
+  --foreground: #FFF;
+  --primary-foreground: #fff;
+  --secondary-foreground: #DEDEDE;
+  --muted-foreground: #929292;
+
+  /* Card */
+  --card: #141822;
+  --secondary-card: #1A2129;
+  --card-foreground: #fff;
+
+  /* Border */
+  --border: #495460;
+  
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.141 0.005 285.823);
+  --secondary: oklch(0.967 0.001 286.375);
+  --muted: oklch(0.967 0.001 286.375);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.705 0.015 286.067);
+}
+
+@layer base {
+  * {
+    @apply border-primary font-khula;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
