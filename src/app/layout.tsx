@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { Khula, Geist_Mono } from "next/font/google";
+import "@/styles/globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const khula = Khula({
+  variable: "--font-khula",
+  weight: "400",
+  style: "normal",
   subsets: ["latin"],
 });
 
@@ -25,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${khula.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>
