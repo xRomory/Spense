@@ -18,10 +18,8 @@ const koulen = Koulen({
 });
 
 const logo = BBH_Sans_Bogle({
-  subsets: ["latin"],
   weight: ["400"],
   variable: "--font-logo",
-  display: "swap",
 });
 
 export const metadata: Metadata = {

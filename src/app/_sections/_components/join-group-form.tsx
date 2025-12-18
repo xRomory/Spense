@@ -26,7 +26,7 @@ export const JoinGroupForm = () => {
           placeholder="Enter your name"
         />
       </div>
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="w-full bg-primary/80 hover:bg-primary/70">
         Join Group
         <ArrowRight className="h-4 w-4 ml-2" />
       </Button>
