@@ -1,11 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-/* @import url('https://fonts.googleapis.com/css2?family=BBH+Bogle&family=Khula:wght@300;400;600;700;800&family=Koulen&display=swap'); */
 
 /* @custom-variant dark (&:is(.dark *)); */
 
 @theme inline {
-  --font-logo: 'BBH Bogle';
+  --font-logo: 'BBH Sans Bogle';
   --font-khula: 'Khula';
   --font-koulen: 'Koulen';
 
@@ -62,6 +61,10 @@
   --muted: oklch(0.967 0.001 286.375);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);
+}
+
+.heading {
+  font-family: var(--font-koulen);
 }
 
 @layer base {
