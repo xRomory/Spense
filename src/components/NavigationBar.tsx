@@ -10,7 +10,7 @@ export default function NavigationBar() {
 
           <div className="flex items-center">
             <Button
-              className="h-8"
+              className="h-8 bg-linear-to-r from-[#042E5E] to-primary hover:bg-linear-to-r hover:from-[#042E5E]/90 hover:to-primary/90"
             >
               Get Started
             </Button>
