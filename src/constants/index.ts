@@ -22,3 +22,9 @@ export const FEATURE_CARDS = [
     icon: Share2,
   }
 ];
+
+export const TAB_ITEMS = [
+  { id: "balance", label: "Balance" },
+  { id: "expense", label: "Expenses" },
+  { id: "addExpense", label: "Add Expenses" },
+]

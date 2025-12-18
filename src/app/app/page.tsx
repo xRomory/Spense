@@ -1,14 +1,14 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Spense Dashboard",
-  description: "Dashboard"
+  title: "Spense Expense Tracker",
+  description: "Expense Tracker Page"
 };
 
-const SpenseDashboardPage = () => {
+const SpenseExpenseTracker = () => {
   return (
     <div>page</div>
   )
 }
 
-export default SpenseDashboardPage;
+export default SpenseExpenseTracker;
