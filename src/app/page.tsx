@@ -1,8 +1,8 @@
 import NavigationBar from "@/components/NavigationBar";
-import HeroSection from "./sections/hero";
-import FeaturesSection from "./sections/features";
-import Footer from "./sections/footer";
-import ActionCards from "./sections/actions";
+import HeroSection from "./_sections/hero";
+import FeaturesSection from "./_sections/features";
+import Footer from "./_sections/footer";
+import ActionCards from "./_sections/actions";
 
 export default function Home() {
   return (
@@ -18,7 +18,6 @@ export default function Home() {
 
         {/* Action Grid */}
         <ActionCards />
-        
       </div>
 
       {/* Footer */}

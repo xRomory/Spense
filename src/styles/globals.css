@@ -12,6 +12,7 @@
   --color-background: var(--background);
   --color-destructive: var(--destructive);
   --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
 
   /* Text */
   --color-foreground: var(--foreground);
@@ -30,7 +31,6 @@
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-muted: var(--muted);
-  --color-secondary: var(--secondary);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
 }
@@ -40,6 +40,7 @@
   --background: #000A16;
   --primary: #00d853;
   --destructive: #FA3232;
+  --secondary: #042E5E;
 
   /* Text */
   --foreground: #FFF;
@@ -57,7 +58,6 @@
   
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
-  --secondary: oklch(0.967 0.001 286.375);
   --muted: oklch(0.967 0.001 286.375);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);

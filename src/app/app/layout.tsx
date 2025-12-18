@@ -10,3 +10,5 @@ export const metadata: Metadata = {
 const AppLayout = ({children}: { children: React.ReactNode }) => {
   return <SpenseLayout>{children}</SpenseLayout>
 }
+
+export default AppLayout;
