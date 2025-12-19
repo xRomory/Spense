@@ -24,7 +24,7 @@ export const CreateGroupForm = () => {
           placeholder="e.g. Room 123, Trip to Boracay"
         />
       </div>
-      <Button type="submit" className="w-full bg-primary/80 hover:bg-primary/70">
+      <Button type="submit" className="w-full">
         Create Group
         <ArrowRight className="w-4 h-4 ml-2" />
       </Button>
