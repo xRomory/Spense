@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { paths } from "@/config/paths";
-import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { InviteModal } from "./invite-modal";
+import { ArrowLeft } from "lucide-react";
 
 export default function SpenseHeader() {
   return (

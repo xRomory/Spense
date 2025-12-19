@@ -1,14 +1,14 @@
-import { Metadata } from "next"
+import { Metadata } from "next";
+import { ExpenseTracker } from "./_components/expense-tracker";
+
 
 export const metadata: Metadata = {
   title: "Spense Expense Tracker",
-  description: "Expense Tracker Page"
+  description: "Expense Tracker Page",
 };
 
-const SpenseExpenseTracker = () => {
-  return (
-    <div>page</div>
-  )
-}
+const ExpenseTrackerPage = () => {
+  return <ExpenseTracker />;
+};
 
-export default SpenseExpenseTracker;
+export default ExpenseTrackerPage;
