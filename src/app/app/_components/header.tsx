@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { paths } from "@/config/paths";
+import { Button } from "@/components/ui/button";
+import { InviteModal } from "./invite-modal";
 import { ArrowLeft } from "lucide-react";
 
 export default function SpenseHeader() {
@@ -13,12 +14,14 @@ export default function SpenseHeader() {
           </Button>
         </a>
         <div>
-          <h1 className="text-3xl font-bold">Group Name</h1>
-          <p className="text-secondary-foreground">(Group Number) members • Split expenses and track balances</p>
+          <h1 className="text-xl md:text-3xl font-bold">Group Name</h1>
+          <p className="text-secondary-foreground text-sm md:text-base">(Group Number) members • {" "}
+            <span className="text-muted-foreground">Split expenses and track balances</span>
+          </p>
         </div>
       </div>
       <div className="flex items-center gap-2">
-        
+        <InviteModal />
       </div>
     </header>
   );
