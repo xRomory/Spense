@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Spense
 
-## Getting Started
+**Spense** is a lightweight expense-sharing web application designed to help people split bills and keep track of who owes what — without the friction of sign-ups or complicated setup.
 
-First, run the development server:
+Perfect for **roommates**, **friends**, and **group trips**, Spense makes shared expenses simple, transparent, and stress-free.
+
+>_ Spense is built with simplicity in mind — focusing on clarity, fairness, and ease of use when sharing expenses.
+
+---
+
+## Purpose
+
+Managing shared expenses often leads to confusion, forgotten payments, or awkward conversations.  
+Spense solves this by providing a **clear, visual, and automatic way** to track group expenses and balances — so everyone knows exactly where they stand.
+
+No accounts. No hassle. Just fair splitting.
+
+---
+
+## Key Features
+
+- **Auto-generated Join Code / Invite Link**  
+  Create a group instantly and invite others using a shareable code or link.
+
+- **No Sign-Up Required**  
+  Start tracking expenses right away — no accounts, passwords, or emails needed.
+
+- **Smart Expense Splitting**  
+  Automatically calculates who owes what with:
+  - Equal splits  
+  - Custom splits (different amounts per person)
+
+- **Clear Balance Overview**  
+  Easily see:
+  - Who owes money  
+  - Who is owed money  
+  - Net balances with visual indicators
+
+- **Group-Based Expense Tracking**  
+  Add friends or roommates and track shared expenses together in one place.
+
+---
+
+## How It Works
+
+1. **Create a Group**  
+   Generate a join code or invite link.
+
+2. **Invite Members**  
+   Share the code/link with friends or roommates.
+
+3. **Add Expenses**  
+   Log expenses and choose how they should be split.
+
+4. **Track Balances**  
+   Instantly see debts and credits update in real time.
+
+---
+
+## Tech Stack
+
+### Frontend
+- **Next.js 16**
+- **React 19**
+- **TypeScript**
+- **Tailwind CSS**
+- **Radix UI** (Dialog, Tabs, Labels)
+- **Lucide Icons**
+
+### State & Data Management
+- **Zustand** – lightweight global state
+- **@tanstack/react-query** – async data handling
+- **React Hook Form** – form management
+- **Zod** – schema validation
+
+### UI & UX Enhancements
+- **next-themes** – theme handling
+- **sonner** – toast notifications
+- **clsx / tailwind-merge** – conditional styling
+- **react-error-boundary** – error handling
+
+---
+
+## Project Scripts
 
 ```bash
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm run start
+
+# Run linting
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Status
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Spense is currently in active development.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is licensed under the **MIT License**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+You are free to use, modify, and distribute this software for personal or commercial purposes, as long as proper credit is given.  
 
-## Deploy on Vercel
+Spense was built as a **personal utility project** to simplify shared expense tracking with friends and roommates. Contributions and improvements are welcome.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
