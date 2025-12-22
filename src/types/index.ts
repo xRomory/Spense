@@ -19,8 +19,8 @@ export interface Expense {
 
 export interface Balance {
   personId: string;
-  owes: { toPersonId: string; amount: number; };
-  owed: { fromPersonId: string; amount: number; };
+  owes: { toPersonId: string; amount: number; }[];
+  owed: { fromPersonId: string; amount: number; }[];
   netBalance: number;
 }
 
