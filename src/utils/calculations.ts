@@ -59,3 +59,7 @@ export function calculateEqualSplit(amount: number, peopleCount: number): number
 export function formatCurrency(amount: number): string {
   return `₱${amount.toFixed(2)}`;
 }
+
+export function generateId(): string {
+  return Math.random().toString(36).substring(2, 9);
+}
