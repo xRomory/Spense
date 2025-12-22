@@ -1,12 +1,112 @@
 // Note: this function is in localStorage. Will refactor later utilizing Zustand
 
 import { Expense, Person, Settlement } from "@/types";
-import { useState } from "react";
+import { generateId } from "@/utils/calculations";
+import { useEffect, useState } from "react";
+
+const STORAGE_KEY_EXEPENSES = "spense-expense-tracker";
+const STORAGE_KEY_PEOPLE = "spense-expense-people";
+const STORAGE_KEY_SETTLEMENTS = "spense-tracker-settlements";
 
 export function useExpenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [people, setPeople] = useState<Person[]>([]);
-  const [settlement, setSettlement] = useState<Settlement[]>([]);
+  const [settlements, setSettlements] = useState<Settlement[]>([]);
 
+  useEffect(() => {
+    const savedExpenses = localStorage.getItem(STORAGE_KEY_EXEPENSES);
+    const savedPeople = localStorage.getItem(STORAGE_KEY_PEOPLE);
+    const savedSettlements = localStorage.getItem(STORAGE_KEY_SETTLEMENTS);
 
+    if (savedExpenses) setExpenses(JSON.parse(savedExpenses));
+
+    if (savedSettlements) setSettlements(JSON.parse(savedSettlements));
+
+    if (savedPeople) {
+      setPeople(JSON.parse(savedPeople))
+    } else {
+      const defaultPeople = [
+        { id: generateId(), name: "You" },
+        { id: generateId(), name: "Emil" },
+        { id: generateId(), name: "Octa" },
+      ];
+
+      setPeople(defaultPeople);
+      localStorage.setItem(STORAGE_KEY_PEOPLE, JSON.stringify(defaultPeople));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_EXEPENSES, JSON.stringify(expenses));
+  }, [expenses]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_PEOPLE, JSON.stringify(people));
+  }, [people]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_SETTLEMENTS, JSON.stringify(settlements));
+  }, [settlements]);
+
+  // === Remove codes below once connected to backend (CRUD) ===
+  const addExpense = (expense: Omit<Expense, "id">) => {
+    const newExpense: Expense = {
+      ...expense,
+      id: generateId()
+    };
+
+    setExpenses(prev => [...prev, newExpense]);
+  };
+
+  const addPerson = (name: string) => {
+    const newPerson: Person = {
+      id: generateId(),
+      name
+    };
+
+    setPeople(prev => [...prev, newPerson]);
+
+    return newPerson;
+  };
+
+  const settleExpense = (
+    expenseId: string,
+    fromPersonId: string,
+    toPersonId: string,
+    amount: number
+  ) => {
+    const settlement: Settlement = {
+      id: generateId(),
+      fromPersonId,
+      toPersonId,
+      amount,
+      expenseId,
+      settledAt: new Date().toISOString()
+    };
+
+    setSettlements(prev => [...prev, settlement]);
+
+    // Mark expense as settled if fully settled
+    setExpenses(prev => prev.map(expense => {
+      if (expense.id === expenseId) {
+        return { ...expense, settled: true, settledAt: new Date().toISOString() };
+      }
+
+      return expense;
+    }));
+  }
+
+  const deleteExpense = (expenseId: string) => {
+    setExpenses(prev => prev.filter(expense => expense.id !== expenseId));
+  };
+
+  return {
+    expenses,
+    people,
+    settlements,
+    addExpense,
+    addPerson,
+    settleExpense,
+    deleteExpense,
+  };
 }
