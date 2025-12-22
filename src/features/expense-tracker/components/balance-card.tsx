@@ -21,10 +21,6 @@ export const BalanceCard = ({ balance, people, currentUserId, onSettle }: Balanc
 
   if(!person) return null;
 
-  const getPersonName = (personId: string) => {
-    return people.find(p => p.id === personId)?.name || "Unknown";
-  }
-
   return (
     <Card className="w-full">
       <CardHeader className="pb-3">
@@ -48,6 +44,13 @@ export const BalanceCard = ({ balance, people, currentUserId, onSettle }: Balanc
         <div className="p-3 rounded-lg bg-background">
           <div className="text-center">
             <p className="text-sm text-secondary-foreground mb-1">Net Balance</p>
+            <p className={`text-lg font-bold ${
+              balance.netBalance > 0 ? "text-green-600" :
+              balance.netBalance < 0 ? "text-red-600" : "text-secondary-foreground"
+            }`}>
+              {balance.netBalance > 0 && "+"}
+              {formatCurrency(balance.netBalance)}
+            </p>
           </div>
         </div>
       </CardContent>

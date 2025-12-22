@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Khula, Koulen, BBH_Sans_Bogle } from "next/font/google";
+import { Khula, Koulen, BBH_Bogle } from "next/font/google";
 import "@/styles/globals.css";
 
 // Google Fonts
@@ -17,7 +17,8 @@ const koulen = Koulen({
   display: "swap",
 });
 
-const logo = BBH_Sans_Bogle({
+const logo = BBH_Bogle({
+  subsets: ["latin"],
   weight: ["400"],
   variable: "--font-logo",
 });
