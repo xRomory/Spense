@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 
 export default function NavigationBar() {
   return (
-    <header className="bg-background/80 backdrop-blur-sm border-b border-primary shadow-xl/20 shadow-primary sticky top-0 z-10">
+    <header className="bg-background/80 backdrop-blur-xs border-b border-primary shadow-xl/20 shadow-primary sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <SpenseLogo />
@@ -18,5 +18,5 @@ export default function NavigationBar() {
         </div>
       </div>
     </header>
-  )
+  );
 }
