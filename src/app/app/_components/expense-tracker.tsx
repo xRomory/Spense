@@ -22,8 +22,20 @@ import {
   TrendingUp,
   Users
 } from "lucide-react";
+import { useExpenses } from "@/hooks/useExpenses";
+import { useCalculations } from "@/hooks/useCalculations";
+import { BalanceCard } from "@/features/expense-tracker/components/balance-card";
+import { useState } from "react";
 
 export const ExpenseTracker = () => {
+  const { expenses, people, addExpense, addPerson, settleExpense, deleteExpense } = useExpenses();
+  const { balances } = useCalculations(expenses, people);
+  const [currentUserId, setCurrentUserId] = useState("");
+
+  const handleSettleDebt = (fromPersonId: string, toPersonId: string, amount: number) => {
+    settleExpense("debt-settlement", fromPersonId, toPersonId, amount);
+  }
+
   return (
     <div className="max-w-7xl mx-auto space-y-6">
       <SpenseLogo />
@@ -126,7 +138,15 @@ export const ExpenseTracker = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-
+                {balances.map(balance => (
+                  <BalanceCard 
+                    key={balance.personId}
+                    balance={balance}
+                    people={people}
+                    currentUserId={currentUserId}
+                    onSettle={handleSettleDebt}
+                  />
+                ))}
               </div>
             </CardContent>
           </Card>
