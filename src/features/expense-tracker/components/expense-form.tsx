@@ -9,8 +9,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Person } from "@/types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Person, SplitType } from "@/types";
+import { calculateEqualSplit } from "@/utils/calculations";
 import { format } from "date-fns";
 import { CalendarIcon, Plus } from "lucide-react";
 import { useState } from "react";
@@ -21,7 +28,7 @@ interface ExpenseFormProps {
     title: string;
     amount: number;
     paidBy: string;
-    splitType: "equal" | "custom";
+    splitType: SplitType;
     splits: { personId: string; amount: number }[];
     date: string;
     settled: boolean;
@@ -38,9 +45,21 @@ export const ExpenseForm = ({
   const [showAddPerson, setShowAddPerson] = useState(false);
   const [newPersonName, setNewPersonName] = useState("");
   const [paidBy, setPaidBy] = useState("");
+  const [splitType, setSplitType] = useState<SplitType>("equal");
+  const [amount, setAmount] = useState("");
+  const [customSplits, setCustomSplits] = useState<{
+    [personId: string]: string;
+  }>({});
+
+  const expenseAmount = parseFloat(amount) || 0;
+  const totalCustomSplit = Object.values(customSplits).reduce(
+    (sum, value) => sum + (parseFloat(value) || 0),
+    0
+  );
+  const customSplitValid = Math.abs(totalCustomSplit - expenseAmount) < 0.01;
 
   const handleAddPerson = () => {
-    if(newPersonName.trim()) {
+    if (newPersonName.trim()) {
       onAddPerson(newPersonName.trim());
       setNewPersonName("");
       setShowAddPerson(false);
@@ -65,6 +84,8 @@ export const ExpenseForm = ({
             id="amount"
             type="number"
             step="0.01"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
             placeholder="₱0.00"
             required
           />
@@ -115,7 +136,9 @@ export const ExpenseForm = ({
               onChange={(e) => setNewPersonName(e.target.value)}
               placeholder="Person name"
             />
-            <Button type="button" onClick={handleAddPerson}>Add</Button>
+            <Button type="button" onClick={handleAddPerson}>
+              Add
+            </Button>
           </div>
         )}
 
@@ -123,8 +146,96 @@ export const ExpenseForm = ({
           <SelectTrigger>
             <SelectValue placeholder="Select who paid" />
           </SelectTrigger>
+          <SelectContent>
+            {people.map((person) => (
+              <SelectItem key={person.id} value={person.id}>
+                {person.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
       </div>
+
+      <div className="space-y-2">
+        <Label>Split Type</Label>
+        <Select
+          value={splitType}
+          onValueChange={(value: SplitType) => setSplitType(value)}
+        >
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="equal">Equal Split</SelectItem>
+            <SelectItem value="custom">Custom Split</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {splitType === "equal" && expenseAmount > 0 && (
+        <div className="p-3 bg-card rounded-lg">
+          <p className="text-sm text-secondary-foreground">
+            Each person pays:{" "}
+            <span className="font-semibold">
+              ₱{calculateEqualSplit(expenseAmount, people.length).toFixed(2)}
+            </span>
+          </p>
+        </div>
+      )}
+
+      {splitType === "custom" && (
+        <div className="space-y-4">
+          <Label>Custom Amounts</Label>
+          {people.map((person) => (
+            <div key={person.id} className="flex items-center gap-2">
+              <Label className="w-20 text-sm">{person.name}</Label>
+              <Input
+                type="number"
+                step="0.01"
+                value={customSplits[person.id] || ""}
+                onChange={(e) =>
+                  setCustomSplits((prev) => ({
+                    ...prev,
+                    [person.id]: e.target.value,
+                  }))
+                }
+                placeholder="₱0.00"
+              />
+            </div>
+          ))}
+          <div className="p-3 bg-background border border-primary rounded-lg">
+            <p className="text-sm">
+              Total:{" "}
+              <span
+                className={`font-semibold ${
+                  customSplitValid ? "text-green-600" : "text-destructive"
+                }`}
+              >
+                ₱{totalCustomSplit.toFixed(2)}
+              </span>
+              {expenseAmount > 0 && (
+                <span className="text-secondary-foreground">
+                  {" "}
+                  / ₱{expenseAmount.toFixed(2)}
+                </span>
+              )}
+            </p>
+            {!customSplitValid && expenseAmount > 0 && (
+              <p className="text-xs text-destructive mt-1">
+                Custom splits must equal the total expense amount
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      <Button
+        type="submit"
+        className="w-full"
+        disabled={splitType === "custom" && !customSplitValid}
+      >
+        Add Expense
+      </Button>
     </form>
   );
 };
