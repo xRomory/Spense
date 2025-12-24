@@ -19,6 +19,7 @@ import {
   Banknote,
   NotebookPen,
   PhilippinePeso,
+  Receipt,
   TrendingUp,
   Users
 } from "lucide-react";
@@ -26,6 +27,8 @@ import { useExpenses } from "@/hooks/useExpenses";
 import { useCalculations } from "@/hooks/useCalculations";
 import { BalanceCard } from "@/features/expense-tracker/components/balance-card";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { ExpenseCard } from "@/features/expense-tracker/components/expense-card";
 
 export const ExpenseTracker = () => {
   const { expenses, people, addExpense, addPerson, settleExpense, deleteExpense } = useExpenses();
@@ -35,6 +38,14 @@ export const ExpenseTracker = () => {
   const handleSettleDebt = (fromPersonId: string, toPersonId: string, amount: number) => {
     settleExpense("debt-settlement", fromPersonId, toPersonId, amount);
   }
+
+  const handleSettle = (expenseId: string) => {
+    const expense = expenses.find(e => e.id === expenseId);
+
+    if(expense) {
+      settleExpense(expenseId, expense.paidBy, expense.paidBy, expense.amount);
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
@@ -148,6 +159,41 @@ export const ExpenseTracker = () => {
                   />
                 ))}
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="expenses" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2 font-koulen">
+                  <Receipt className="h-5 w-5 text-primary" />
+                  All Expenses
+                </div>
+                <Badge variant="outline">{expenses.length}</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {expenses.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-secondary-foreground">No expenses yet. Add your first expense to get started!</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {expenses
+                    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                    .map(expense => (
+                      <ExpenseCard
+                        key={expense.id}
+                        expense={expense}
+                        people={people}
+                        onDelete={deleteExpense}
+                        onSettle={handleSettle}
+                      />
+                    ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
