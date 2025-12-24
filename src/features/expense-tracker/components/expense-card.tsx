@@ -8,10 +8,10 @@ import { format } from "date-fns";
 import { Calendar, User } from "lucide-react";
 
 interface ExpenseCardProps {
-  expense: Expense,
-  people: Person[],
-  onDelete: (expenseId: string) => void,
-  onSettle: (expenseId: string) => void
+  expense: Expense;
+  people: Person[];
+  onDelete: (expenseId: string) => void;
+  onSettle: (expenseId: string) => void;
 }
 
 export const ExpenseCard = ({
