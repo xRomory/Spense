@@ -19,6 +19,7 @@ import {
   Banknote,
   NotebookPen,
   PhilippinePeso,
+  Plus,
   Receipt,
   TrendingUp,
   Users
@@ -29,6 +30,7 @@ import { BalanceCard } from "@/features/expense-tracker/components/balance-card"
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { ExpenseCard } from "@/features/expense-tracker/components/expense-card";
+import { ExpenseForm } from "@/features/expense-tracker/components/expense-form";
 
 export const ExpenseTracker = () => {
   const { expenses, people, addExpense, addPerson, settleExpense, deleteExpense } = useExpenses();
@@ -196,6 +198,26 @@ export const ExpenseTracker = () => {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="add" className="space-y-4">
+          <div className="flex justify-center">
+            <Card className="w-full max-w-2xl">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 font-koulen">
+                  <Plus className="h-5 w-5 text-primary" />
+                  Add New
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ExpenseForm 
+                  people={people}
+                  onAddExpense={addExpense}
+                  onAddPerson={addPerson}
+                />
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
