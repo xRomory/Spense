@@ -20,7 +20,7 @@ import { Person, SplitType } from "@/types";
 import { calculateEqualSplit } from "@/utils/calculations";
 import { format } from "date-fns";
 import { CalendarIcon, Plus } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface ExpenseFormProps {
   people: Person[];
@@ -45,11 +45,53 @@ export const ExpenseForm = ({
   const [showAddPerson, setShowAddPerson] = useState(false);
   const [newPersonName, setNewPersonName] = useState("");
   const [paidBy, setPaidBy] = useState("");
-  const [splitType, setSplitType] = useState<SplitType>("equal");
   const [amount, setAmount] = useState("");
+  const [title, setTitle] = useState("");
+  const [splitType, setSplitType] = useState<SplitType>("equal");
   const [customSplits, setCustomSplits] = useState<{
     [personId: string]: string;
   }>({});
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if(!title || !amount || !paidBy) return;
+
+    const expenseAmount = parseFloat(amount);
+    let splits: { personId: string, amount: number }[] = [];
+
+    if(splitType === "equal") {
+      const splitAmount = calculateEqualSplit(expenseAmount, people.length);
+
+      splits = people.map(person => ({
+        personId: person.id,
+        amount: splitAmount,
+      }));
+    } else {
+      splits = people.map(person => ({
+        personId: person.id,
+        amount: parseFloat(customSplits[person.id] || '0')
+      }));
+    }
+
+    onAddExpense({
+      title,
+      amount: expenseAmount,
+      paidBy,
+      splitType,
+      splits,
+      date: date.toISOString(),
+      settled: false
+    });
+
+    // Reset form
+    setTitle("");
+    setAmount("");
+    setPaidBy("");
+    setSplitType("equal");
+    setCustomSplits({});
+    setDate(new Date());
+  };
 
   const expenseAmount = parseFloat(amount) || 0;
   const totalCustomSplit = Object.values(customSplits).reduce(
@@ -67,7 +109,7 @@ export const ExpenseForm = ({
   };
 
   return (
-    <form className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="title">Expense Title</Label>
         <Input
