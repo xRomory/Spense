@@ -76,7 +76,7 @@ export const ExpenseCard = ({
               );
             })}
           </div>
-          <div className="mt-2 pt-2 border-t">
+          <div className="mt-4 pt-4 border-t">
             <div className="flex justify-between text-sm font-medium">
               <span>Split Type:</span>
               <Badge variant="outline">

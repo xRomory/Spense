@@ -1,50 +1,67 @@
 "use client";
 
+import { useState } from "react";
 import { formatCurrency } from "@/utils/calculations";
+import { useExpenses } from "@/hooks/useExpenses";
+import { useCalculations } from "@/hooks/useCalculations";
 import SpenseLogo from "@/components/logo";
 import SpenseHeader from "./header";
-import { 
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BalanceCard } from "@/features/expense-tracker/components/balance-card";
+import { Badge } from "@/components/ui/badge";
+import { ExpenseCard } from "@/features/expense-tracker/components/expense-card";
+import { ExpenseForm } from "@/features/expense-tracker/components/expense-form";
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from "@/components/ui/tabs";
-import {
+  ArrowLeft,
   Banknote,
   NotebookPen,
   PhilippinePeso,
   Plus,
   Receipt,
   TrendingUp,
-  Users
+  Users,
 } from "lucide-react";
-import { useExpenses } from "@/hooks/useExpenses";
-import { useCalculations } from "@/hooks/useCalculations";
-import { BalanceCard } from "@/features/expense-tracker/components/balance-card";
-import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { ExpenseCard } from "@/features/expense-tracker/components/expense-card";
-import { ExpenseForm } from "@/features/expense-tracker/components/expense-form";
+import { Button } from "@/components/ui/button";
+import { InviteModal } from "./invite-modal";
+import { paths } from "@/config/paths";
+
+interface GroupData {
+  id: string;
+  name: string;
+  createdAt: string;
+  members: Array<{
+    id: string;
+    name: string;
+    isCreator: boolean;
+  }>;
+}
 
 export const ExpenseTracker = () => {
-  const { expenses, people, addExpense, addPerson, settleExpense, deleteExpense } = useExpenses();
+  const {
+    expenses,
+    people,
+    addExpense,
+    addPerson,
+    settleExpense,
+    deleteExpense,
+  } = useExpenses();
   const { balances } = useCalculations(expenses, people);
   const [currentUserId, setCurrentUserId] = useState("");
+  const [groupData, setGroupData] = useState<GroupData | null>(null);
 
-  const handleSettleDebt = (fromPersonId: string, toPersonId: string, amount: number) => {
+  const handleSettleDebt = (
+    fromPersonId: string,
+    toPersonId: string,
+    amount: number
+  ) => {
     settleExpense("debt-settlement", fromPersonId, toPersonId, amount);
-  }
+  };
 
   const handleSettle = (expenseId: string) => {
-    const expense = expenses.find(e => e.id === expenseId);
+    const expense = expenses.find((e) => e.id === expenseId);
 
-    if(expense) {
+    if (expense) {
       settleExpense(expenseId, expense.paidBy, expense.paidBy, expense.amount);
     }
   };
@@ -52,7 +69,32 @@ export const ExpenseTracker = () => {
   return (
     <div className="max-w-7xl mx-auto space-y-6">
       <SpenseLogo />
-      <SpenseHeader />
+      {/* <SpenseHeader /> */}
+
+      <header className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <a href={paths.home.getHref()}>
+            <Button variant="outline" size="sm">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Button>
+          </a>
+          <div>
+            <h1 className="text-xl md:text-3xl font-bold">{groupData?.name}</h1>
+            <p className="text-secondary-foreground text-sm md:text-base">
+              {groupData?.members.length} members •{" "}
+              <span className="text-muted-foreground">
+                Split expenses and track balances
+              </span>
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          {groupData && (
+            <InviteModal groupId={groupData.id} groupName={groupData.name} />
+          )}
+        </div>
+      </header>
 
       {/* Group Members Count */}
       <Card>
@@ -151,8 +193,8 @@ export const ExpenseTracker = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {balances.map(balance => (
-                  <BalanceCard 
+                {balances.map((balance) => (
+                  <BalanceCard
                     key={balance.personId}
                     balance={balance}
                     people={people}
@@ -179,13 +221,18 @@ export const ExpenseTracker = () => {
             <CardContent>
               {expenses.length === 0 ? (
                 <div className="text-center py-8">
-                  <p className="text-secondary-foreground">No expenses yet. Add your first expense to get started!</p>
+                  <p className="text-secondary-foreground">
+                    No expenses yet. Add your first expense to get started!
+                  </p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   {expenses
-                    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                    .map(expense => (
+                    .sort(
+                      (a, b) =>
+                        new Date(b.date).getTime() - new Date(a.date).getTime()
+                    )
+                    .map((expense) => (
                       <ExpenseCard
                         key={expense.id}
                         expense={expense}
@@ -210,7 +257,7 @@ export const ExpenseTracker = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ExpenseForm 
+                <ExpenseForm
                   people={people}
                   onAddExpense={addExpense}
                   onAddPerson={addPerson}
@@ -222,4 +269,4 @@ export const ExpenseTracker = () => {
       </Tabs>
     </div>
   );
-}
+};
