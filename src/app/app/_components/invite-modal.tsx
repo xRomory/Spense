@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 import { Copy, Share2, Users } from "lucide-react";
 
 interface InviteModalProps {
@@ -19,7 +23,42 @@ interface InviteModalProps {
   groupName: string;
 }
 
-export const InviteModal = () => {
+export const InviteModal = ({ groupId, groupName }: InviteModalProps) => {
+  const [inviteCode, setInviteCode] = useState("");
+  const [inviteLink, setInviteLink] = useState("");
+
+  useEffect(() => {
+    const code = groupId.substring(0, 6).toUpperCase();
+    setInviteCode(code);
+
+    const baseUrl = window.location.origin;
+    const link = `${baseUrl}/?join=${code}`;
+    setInviteLink(link);
+  }, [groupId]);
+
+  const copyToClipboard = (text: string, type: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success(`${type} copied to clipboard`);
+    });
+  };
+
+  const shareInvite = async () => {
+    if(navigator.share) {
+      try {
+        await navigator.share({
+          title: `Join "${groupName}" Expense Group`,
+          text: `Join our expense tracking group with code: ${inviteCode}`,
+          url: inviteLink,
+        });
+      } catch (error) {
+        // Fallback to copy
+        copyToClipboard(inviteLink, "Invite Link");
+      }
+    } else {
+      copyToClipboard(inviteLink, "Invite Link");
+    }
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -43,14 +82,15 @@ export const InviteModal = () => {
               <div className="space-y-2">
                 <Label className="text-md font-medium">Join Code</Label>
                 <div className="flex items-center gap-2">
-                  <Input 
+                  <Input
+                    value={inviteLink}
                     readOnly
                     className="font-mono text-center text-lg font-bold"
                   />
                   <Button
                     variant="outline"
                     size="sm"
-
+                    onClick={() => copyToClipboard(inviteLink, "Invite Link")}
                   >
                     <Copy className="w-4 h-4" />
                   </Button>
@@ -68,14 +108,15 @@ export const InviteModal = () => {
               <div className="space-y-2">
                 <Label className="text-md font-medium">Invite Link</Label>
                 <div className="flex items-center gap-2">
-                  <Input 
+                  <Input
+                    value={inviteLink}
                     readOnly
                     className="font-mono text-center text-lg font-bold"
                   />
                   <Button
                     variant="outline"
                     size="sm"
-
+                    onClick={() => copyToClipboard(inviteLink, "Invite Link")}
                   >
                     <Copy className="w-4 h-4" />
                   </Button>
@@ -87,7 +128,7 @@ export const InviteModal = () => {
             </CardContent>
           </Card>
 
-          <Button className="w-full">
+          <Button onClick={shareInvite} className="w-full">
             <Share2 className="w-4 h-4 mr-2" />
             Share Invite
           </Button>
