@@ -1,5 +1,9 @@
 "use client";
 
+import React, { useState } from "react";
+import { format } from "date-fns";
+import { Person, SplitType } from "@/types";
+import { calculateEqualSplit } from "@/utils/calculations";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
@@ -16,11 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Person, SplitType } from "@/types";
-import { calculateEqualSplit } from "@/utils/calculations";
-import { format } from "date-fns";
 import { CalendarIcon, Plus } from "lucide-react";
-import React, { useState } from "react";
 
 interface ExpenseFormProps {
   people: Person[];
@@ -114,6 +114,8 @@ export const ExpenseForm = ({
         <Label htmlFor="title">Expense Title</Label>
         <Input
           id="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. Electric Bill - September"
           required
         />
