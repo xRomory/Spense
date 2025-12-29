@@ -15,8 +15,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Copy, Share2, Users } from "lucide-react";
 import { toast } from "sonner";
+import { Copy, Share2, Users } from "lucide-react";
 
 interface InviteModalProps {
   groupId: string;
