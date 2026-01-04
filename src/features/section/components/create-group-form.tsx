@@ -1,21 +1,19 @@
 "use client";
 
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 import { generateId } from "@/utils/calculations";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 export const CreateGroupForm = () => {
   const router = useRouter();
 
   const [groupName, setGroupName] = useState("");
   const [username, setUsername] = useState("");
-  const [joinCode, setJoinCode] = useState("");
 
   const handleCreateGroup = (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,7 +75,7 @@ export const CreateGroupForm = () => {
           id="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="e.g. Room 123, Trip to Boracay"
+          placeholder="Juan Dela Cruz"
         />
       </div>
       <Button type="submit" className="w-full">

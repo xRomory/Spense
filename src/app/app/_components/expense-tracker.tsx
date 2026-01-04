@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { paths } from "@/config/paths";
 import { formatCurrency } from "@/utils/calculations";
 import { useExpenses } from "@/hooks/useExpenses";
 import { useCalculations } from "@/hooks/useCalculations";
@@ -11,6 +13,8 @@ import { BalanceCard } from "@/features/expense-tracker/components/balance-card"
 import { Badge } from "@/components/ui/badge";
 import { ExpenseCard } from "@/features/expense-tracker/components/expense-card";
 import { ExpenseForm } from "@/features/expense-tracker/components/expense-form";
+import { Button } from "@/components/ui/button";
+import { InviteModal } from "./invite-modal";
 import {
   ArrowLeft,
   Banknote,
@@ -21,10 +25,6 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { InviteModal } from "./invite-modal";
-import { paths } from "@/config/paths";
-import { useRouter } from "next/navigation";
 
 interface GroupData {
   id: string;
