@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatCurrency } from "@/utils/calculations";
 import { useExpenses } from "@/hooks/useExpenses";
 import { useCalculations } from "@/hooks/useCalculations";
 import SpenseLogo from "@/components/logo";
-import SpenseHeader from "./header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BalanceCard } from "@/features/expense-tracker/components/balance-card";
@@ -25,6 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { InviteModal } from "./invite-modal";
 import { paths } from "@/config/paths";
+import { useRouter } from "next/navigation";
 
 interface GroupData {
   id: string;
@@ -38,6 +38,8 @@ interface GroupData {
 }
 
 export const ExpenseTracker = () => {
+  const router = useRouter();
+
   const {
     expenses,
     people,
@@ -46,9 +48,22 @@ export const ExpenseTracker = () => {
     settleExpense,
     deleteExpense,
   } = useExpenses();
-  const { balances } = useCalculations(expenses, people);
+  const { balances, totalExpenses, unsettledExpenses } = useCalculations(expenses, people);
   const [currentUserId, setCurrentUserId] = useState("");
   const [groupData, setGroupData] = useState<GroupData | null>(null);
+
+  useEffect(() => {
+    const savedGroup = localStorage.getItem("spense-expense-tracker-group");
+    const savedUserId = localStorage.getItem("spense-expense-tracker-current-user");
+
+    if(!savedGroup || !savedUserId) {
+      router.push("/");
+      return;
+    }
+
+    setGroupData(JSON.parse(savedGroup));
+    setCurrentUserId(savedUserId);
+  }, [router]);
 
   const handleSettleDebt = (
     fromPersonId: string,
@@ -103,7 +118,20 @@ export const ExpenseTracker = () => {
             Group Members
           </CardTitle>
         </CardHeader>
-        <CardContent>{/* Badge here */}</CardContent>
+        <CardContent>
+          <div className="flex flex-wrap gap-2">
+            {groupData?.members.map(member => (
+              <Badge
+                key={member.id}
+                variant={member.id === currentUserId ? "default" : "secondary"}
+                className="px-3 py-1"
+              >
+                {member.name}
+                {member.id === currentUserId && "(You)"}
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
       </Card>
 
       {/* Summary Card */}
@@ -119,7 +147,7 @@ export const ExpenseTracker = () => {
                   Total Expenses
                 </p>
                 <p className="text-xl font-bold font-koulen">
-                  {formatCurrency(0.0)}
+                  {formatCurrency(totalExpenses)}
                 </p>
               </div>
             </div>
@@ -136,7 +164,7 @@ export const ExpenseTracker = () => {
                 <p className="text-sm text-secondary-foreground">
                   Active Expenses
                 </p>
-                <p className="text-xl font-bold font-koulen">0</p>
+                <p className="text-xl font-bold font-koulen">{unsettledExpenses.length}</p>
               </div>
             </div>
           </CardContent>
@@ -150,7 +178,7 @@ export const ExpenseTracker = () => {
               </div>
               <div>
                 <p className="text-sm text-secondary-foreground">People</p>
-                <p className="text-xl font-bold font-koulen">0</p>
+                <p className="text-xl font-bold font-koulen">{people.length}</p>
               </div>
             </div>
           </CardContent>
@@ -166,14 +194,18 @@ export const ExpenseTracker = () => {
                 <p className="text-sm text-secondary-foreground">
                   Your Balance
                 </p>
-                <p className="text-xl font-bold font-koulen">
-                  {formatCurrency(0.0)}
+                <p className={`text-xl font-bold font-koulen ${
+                  balances.find(b => b.personId === currentUserId)?.netBalance || 0 >= 0
+                    ? "text-primary" : "text-destructive"
+                }`}>
+                  {formatCurrency(Math.abs(balances.find(b => b.personId === currentUserId)?.netBalance || 0))}
                 </p>
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
+
       {/* Main Content */}
       <Tabs defaultValue="balances" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
@@ -192,7 +224,7 @@ export const ExpenseTracker = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {balances.map((balance) => (
+                {balances.map(balance => (
                   <BalanceCard
                     key={balance.personId}
                     balance={balance}
@@ -231,7 +263,7 @@ export const ExpenseTracker = () => {
                       (a, b) =>
                         new Date(b.date).getTime() - new Date(a.date).getTime()
                     )
-                    .map((expense) => (
+                    .map(expense => (
                       <ExpenseCard
                         key={expense.id}
                         expense={expense}

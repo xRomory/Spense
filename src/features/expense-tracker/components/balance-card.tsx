@@ -33,7 +33,7 @@ export const BalanceCard = ({
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full border-border bg-secondary-card">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg flex items-center gap-2">
@@ -52,7 +52,7 @@ export const BalanceCard = ({
 
       <CardContent className="space-y-4">
         {/* Net Balance Summary */}
-        <div className="p-3 rounded-lg bg-background">
+        <div className="p-3 rounded-lg bg-card">
           <div className="text-center">
             <p className="text-sm text-secondary-foreground mb-1">
               Net Balance
@@ -139,7 +139,7 @@ export const BalanceCard = ({
 
         {/* All Settled */}
         {balance.owes.length === 0 && balance.owed.length === 0 && (
-          <div className="text-center p-4 bg-background rounded-lg">
+          <div className="text-center p-4 bg-card rounded-lg">
             <p className="text-sm text-muted-foreground">
               {isCurrentUser ? "You are all settled up!" : `${person.name} is all settle up!`}
             </p>
