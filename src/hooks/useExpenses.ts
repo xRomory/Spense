@@ -4,8 +4,8 @@ import { Expense, Person, Settlement } from "@/types";
 import { generateId } from "@/utils/calculations";
 import { useEffect, useState } from "react";
 
-const STORAGE_KEY_EXEPENSES = "spense-expense-tracker";
-const STORAGE_KEY_PEOPLE = "spense-expense-people";
+const STORAGE_KEY_EXEPENSES = "spense-tracker-expenses";
+const STORAGE_KEY_PEOPLE = "spense-tracker-people";
 const STORAGE_KEY_SETTLEMENTS = "spense-tracker-settlements";
 
 export function useExpenses() {
