@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { generateId } from "@/utils/calculations";
+import { 
+  STORAGE_KEY_EXPENSES,
+  STORAGE_KEY_PEOPLE,
+  STORAGE_KEY_SETTLEMENTS
+} from "@/constants";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,12 +47,12 @@ export const CreateGroupForm = () => {
     localStorage.setItem("spense-expense-tracker-current-user", JSON.stringify(currentUserId));
 
     // Initialize empty expenses and people array
-    localStorage.setItem("spense-tracker-expenses", JSON.stringify([]));
-    localStorage.setItem("spense-tracker-people", JSON.stringify([{
+    localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify([]));
+    localStorage.setItem(STORAGE_KEY_PEOPLE, JSON.stringify([{
       id: currentUserId,
       name: username.trim(),
     }]));
-    localStorage.setItem("spense-tracker-settlements", JSON.stringify([]));
+    localStorage.setItem(STORAGE_KEY_SETTLEMENTS, JSON.stringify([]));
     
     toast.success(`Group "${groupName}" created successfully!`);
 

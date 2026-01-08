@@ -1,12 +1,13 @@
 // Note: this function is in localStorage. Will refactor later utilizing Zustand
 
+import {
+  STORAGE_KEY_EXPENSES,
+  STORAGE_KEY_PEOPLE,
+  STORAGE_KEY_SETTLEMENTS
+} from "@/constants";
 import { Expense, Person, Settlement } from "@/types";
 import { generateId } from "@/utils/calculations";
 import { useEffect, useState } from "react";
-
-const STORAGE_KEY_EXEPENSES = "spense-tracker-expenses";
-const STORAGE_KEY_PEOPLE = "spense-tracker-people";
-const STORAGE_KEY_SETTLEMENTS = "spense-tracker-settlements";
 
 export function useExpenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -14,7 +15,7 @@ export function useExpenses() {
   const [settlements, setSettlements] = useState<Settlement[]>([]);
 
   useEffect(() => {
-    const savedExpenses = localStorage.getItem(STORAGE_KEY_EXEPENSES);
+    const savedExpenses = localStorage.getItem(STORAGE_KEY_EXPENSES);
     const savedPeople = localStorage.getItem(STORAGE_KEY_PEOPLE);
     const savedSettlements = localStorage.getItem(STORAGE_KEY_SETTLEMENTS);
 
@@ -37,7 +38,7 @@ export function useExpenses() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_EXEPENSES, JSON.stringify(expenses));
+    localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify(expenses));
   }, [expenses]);
 
   useEffect(() => {
