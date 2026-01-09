@@ -13,6 +13,7 @@ export function useExpenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [people, setPeople] = useState<Person[]>([]);
   const [settlements, setSettlements] = useState<Settlement[]>([]);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     const savedExpenses = localStorage.getItem(STORAGE_KEY_EXPENSES);
@@ -24,7 +25,7 @@ export function useExpenses() {
     if (savedSettlements) setSettlements(JSON.parse(savedSettlements));
 
     if (savedPeople) {
-      setPeople(JSON.parse(savedPeople))
+      setPeople(JSON.parse(savedPeople));
     } else {
       const defaultPeople = [
         { id: generateId(), name: "You" },
@@ -35,19 +36,27 @@ export function useExpenses() {
       setPeople(defaultPeople);
       localStorage.setItem(STORAGE_KEY_PEOPLE, JSON.stringify(defaultPeople));
     }
+
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
+    if(!hydrated) return;
+
     localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify(expenses));
-  }, [expenses]);
+  }, [expenses, hydrated]);
 
   useEffect(() => {
+    if(!hydrated) return;
+
     localStorage.setItem(STORAGE_KEY_PEOPLE, JSON.stringify(people));
-  }, [people]);
+  }, [people, hydrated]);
 
   useEffect(() => {
+    if(!hydrated) return;
+
     localStorage.setItem(STORAGE_KEY_SETTLEMENTS, JSON.stringify(settlements));
-  }, [settlements]);
+  }, [settlements, hydrated]);
 
   // === Remove codes below once connected to backend (CRUD) ===
   const addExpense = (expense: Omit<Expense, "id">) => {
