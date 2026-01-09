@@ -1,20 +1,22 @@
 // Note: this function is in localStorage. Will refactor later utilizing Zustand
 
+import {
+  STORAGE_KEY_EXPENSES,
+  STORAGE_KEY_PEOPLE,
+  STORAGE_KEY_SETTLEMENTS
+} from "@/constants";
 import { Expense, Person, Settlement } from "@/types";
 import { generateId } from "@/utils/calculations";
 import { useEffect, useState } from "react";
-
-const STORAGE_KEY_EXEPENSES = "spense-expense-tracker";
-const STORAGE_KEY_PEOPLE = "spense-expense-people";
-const STORAGE_KEY_SETTLEMENTS = "spense-tracker-settlements";
 
 export function useExpenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [people, setPeople] = useState<Person[]>([]);
   const [settlements, setSettlements] = useState<Settlement[]>([]);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const savedExpenses = localStorage.getItem(STORAGE_KEY_EXEPENSES);
+    const savedExpenses = localStorage.getItem(STORAGE_KEY_EXPENSES);
     const savedPeople = localStorage.getItem(STORAGE_KEY_PEOPLE);
     const savedSettlements = localStorage.getItem(STORAGE_KEY_SETTLEMENTS);
 
@@ -23,7 +25,7 @@ export function useExpenses() {
     if (savedSettlements) setSettlements(JSON.parse(savedSettlements));
 
     if (savedPeople) {
-      setPeople(JSON.parse(savedPeople))
+      setPeople(JSON.parse(savedPeople));
     } else {
       const defaultPeople = [
         { id: generateId(), name: "You" },
@@ -34,19 +36,27 @@ export function useExpenses() {
       setPeople(defaultPeople);
       localStorage.setItem(STORAGE_KEY_PEOPLE, JSON.stringify(defaultPeople));
     }
+
+    setHydrated(true);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_EXEPENSES, JSON.stringify(expenses));
-  }, [expenses]);
+    if(!hydrated) return;
+
+    localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify(expenses));
+  }, [expenses, hydrated]);
 
   useEffect(() => {
+    if(!hydrated) return;
+
     localStorage.setItem(STORAGE_KEY_PEOPLE, JSON.stringify(people));
-  }, [people]);
+  }, [people, hydrated]);
 
   useEffect(() => {
+    if(!hydrated) return;
+
     localStorage.setItem(STORAGE_KEY_SETTLEMENTS, JSON.stringify(settlements));
-  }, [settlements]);
+  }, [settlements, hydrated]);
 
   // === Remove codes below once connected to backend (CRUD) ===
   const addExpense = (expense: Omit<Expense, "id">) => {

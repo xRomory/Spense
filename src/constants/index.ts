@@ -1,5 +1,11 @@
 import { Calculator, Share2, TrendingUp, Users } from "lucide-react";
 
+export const STORAGE_KEY_EXPENSES = "spense-tracker-expenses";
+export const STORAGE_KEY_PEOPLE = "spense-tracker-people";
+export const STORAGE_KEY_SETTLEMENTS = "spense-tracker-settlements";
+export const STORAGE_KEY_GROUP = "spense-expense-tracker-group";
+export const STORAGE_KEY_CURRENT_USER = "spense-expense-tracker-current-user";
+
 export const FEATURE_CARDS = [
   {
     title: "Smart Calculations",
