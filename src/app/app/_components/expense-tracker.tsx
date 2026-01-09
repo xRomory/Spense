@@ -25,6 +25,7 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
+import { STORAGE_KEY_CURRENT_USER, STORAGE_KEY_GROUP, STORAGE_KEY_PEOPLE } from "@/constants";
 
 interface GroupData {
   id: string;
@@ -53,10 +54,11 @@ export const ExpenseTracker = () => {
   const [groupData, setGroupData] = useState<GroupData | null>(null);
 
   useEffect(() => {
-    const savedGroup = localStorage.getItem("spense-expense-tracker-group");
-    const savedUserId = localStorage.getItem("spense-expense-tracker-current-user");
+    const savedGroup = localStorage.getItem(STORAGE_KEY_GROUP);
+    const savedUserId = localStorage.getItem(STORAGE_KEY_CURRENT_USER);
+    const savedPeople = localStorage.getItem(STORAGE_KEY_PEOPLE);
 
-    if(!savedGroup || !savedUserId) {
+    if(!savedGroup || !savedUserId || !savedPeople) {
       router.push("/");
       return;
     }

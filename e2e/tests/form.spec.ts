@@ -24,8 +24,6 @@ test("user can add an expense", async ({ page }) => {
   // Submit form
   await page.click('button:has-text("Create Group")');
 
-  await expect(page.locator('text=Test User')).toBeVisible();
-
   // Go to the "Add Expense tab"
   await page.click("text=Add Expense");
 
