@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { format } from "date-fns";
-import { Person, SplitType } from "@/types";
+import { SplitType } from "@/lib/validators/expenses.schema";
+import { Person } from "@/lib/validators/person.schema";
 import { calculateEqualSplit } from "@/utils/calculations";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";

@@ -21,3 +21,8 @@ export const groupMemberTable = pgTable("groupMember", {
   isCreator: boolean("is_creator").default(false).notNull(),
   joinedAt: timestamp("joined_at").defaultNow().notNull(),
 });
+
+export const personTable = pgTable("person", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar({ length: 100 }).notNull(),
+});
