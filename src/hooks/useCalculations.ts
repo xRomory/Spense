@@ -1,4 +1,5 @@
-import { Expense, Person } from "@/types";
+import { Expense } from "@/lib/validators/expenses.schema";
+import { Person } from "@/lib/validators/person.schema";
 import { calculateBalances } from "@/utils/calculations";
 import { useMemo } from "react";
 

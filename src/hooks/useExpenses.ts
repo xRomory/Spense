@@ -5,7 +5,8 @@ import {
   STORAGE_KEY_PEOPLE,
   STORAGE_KEY_SETTLEMENTS
 } from "@/constants";
-import { Expense, Person, Settlement } from "@/types";
+import { Person } from "@/lib/validators/person.schema";
+import { Expense, Settlement } from "@/types";
 import { generateId } from "@/utils/calculations";
 import { useEffect, useState } from "react";
 
