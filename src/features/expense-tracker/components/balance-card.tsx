@@ -6,7 +6,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Balance, Person } from "@/types";
+import { Balance } from "@/lib/validators/expenses.schema";
+import { Person } from "@/lib/validators/person.schema";
 import { formatCurrency } from "@/utils/calculations";
 import { ArrowDownLeft, ArrowUpRight, PhilippinePeso } from "lucide-react";
 

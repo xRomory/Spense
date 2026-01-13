@@ -8,7 +8,8 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
-import { Expense, Person } from "@/types";
+import { Expense } from "@/lib/validators/expenses.schema";
+import { Person } from "@/lib/validators/person.schema";
 import { formatCurrency } from "@/utils/calculations";
 import { format } from "date-fns";
 import { Calendar, Check, PhilippinePeso, Trash2, User } from "lucide-react";
