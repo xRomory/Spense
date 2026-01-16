@@ -1,6 +1,5 @@
 import {
   boolean,
-  integer,
   numeric,
   pgEnum,
   pgTable,
@@ -14,7 +13,7 @@ import { person } from "./person.model";
 export const splitType = pgEnum("split_type", ["equal", "custom"]);
 
 export const expenses = pgTable("expenses", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid("id").primaryKey().defaultRandom(),
   title: text("expense_title").notNull(),
   amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
   paidBy: uuid("paid_by")
@@ -29,11 +28,11 @@ export const expenses = pgTable("expenses", {
 export const expenseSplit = pgTable(
   "expense_splits", 
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    expenseId: integer("expense_id")
+    id: uuid("id").primaryKey().defaultRandom(),
+    expenseId: uuid("expense_id")
       .references(() => expenses.id, ({ onDelete: "cascade" }))
       .notNull(),
-    personId: uuid()
+    personId: uuid("person_id")
       .references(() => person.id, ({ onDelete: "cascade" }))
       .notNull(),
     amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),

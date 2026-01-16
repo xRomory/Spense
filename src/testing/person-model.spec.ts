@@ -1,6 +1,10 @@
 import { db } from "@/lib/db";
 import { person } from "@/lib/db/models";
 
+jest.mock("uuid", () => ({
+  v4: () => "00000000-0000-0000-0000-000000000000",
+}));
+
 describe("person model", () => {
   beforeAll(async () => {
     await db.delete(person);

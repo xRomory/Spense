@@ -1,20 +1,20 @@
 import {
   boolean,
-  integer,
   pgTable,
   timestamp,
+  uuid,
   varchar
 } from "drizzle-orm/pg-core";
 
 export const groups = pgTable("groups", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid("id").primaryKey().defaultRandom(),
   groupName: varchar({ length: 100 }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const groupMembers = pgTable("group_members", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  groupId: integer("group_id")
+  id: uuid("id").primaryKey().defaultRandom(),
+  groupId: uuid("group_id")
     .references(() => groups.id, ({ onDelete: "cascade" }))
     .notNull(),
   name: varchar({ length: 100 }).notNull(),
