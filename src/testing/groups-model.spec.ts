@@ -24,7 +24,7 @@ describe("groups and groupMembers models", () => {
     expect(group.groupName).toBe("Test Group");
   });
 
-  // Initialize group for groupMmeber referennce
+  // Initialize group for groupId reference
   beforeAll(async () => {
     await db.insert(groups).values({
       id: groupId,

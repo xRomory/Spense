@@ -44,3 +44,51 @@ export const expenseSplit = pgTable(
     ),
   ]
 );
+
+export const balance = pgTable("balance", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  personId: uuid("person_id")
+    .references(() => person.id, ({ onDelete: "cascade" }))
+    .notNull(),
+  netBalance: numeric("net_balance", { precision: 12, scale: 2 }).notNull(),
+});
+
+export const owes = pgTable(
+  "owes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    balanceId: uuid("balance_id")
+      .references(() => balance.id, ({ onDelete: "cascade" }))
+      .notNull(),
+    toPersonId: uuid("to_person_id")
+      .references(() => person.id, ({ onDelete: "cascade" }))
+      .notNull(),
+    amount: numeric("owes_amount", { precision: 12, scale: 2 }).notNull(),
+  },
+  (table) => [
+    uniqueIndex("owe_balance_to_person_unique").on(
+      table.balanceId,
+      table.toPersonId
+    ),
+  ]
+);
+
+export const owed = pgTable(
+  "owed",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    balanceId: uuid("balance_id")
+      .references(() => balance.id, ({ onDelete: "cascade" }))
+      .notNull(),
+    fromPersonId: uuid("from_person_id")
+      .references(() => person.id, ({ onDelete: "cascade" }))
+      .notNull(),
+    amount: numeric("owed_amount", { precision: 12, scale: 2 }).notNull(),
+  },
+  (table) => [
+    uniqueIndex("owed_balance_to_person_unique").on(
+      table.balanceId,
+      table.fromPersonId,
+    ),
+  ]
+);
