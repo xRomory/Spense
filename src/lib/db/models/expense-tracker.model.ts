@@ -45,7 +45,7 @@ export const expenseSplit = pgTable(
   ]
 );
 
-export const balance = pgTable("balance", {
+export const balances = pgTable("balances", {
   id: uuid("id").primaryKey().defaultRandom(),
   personId: uuid("person_id")
     .references(() => person.id, ({ onDelete: "cascade" }))
@@ -58,7 +58,7 @@ export const owes = pgTable(
   {
     id: uuid("id").primaryKey().defaultRandom(),
     balanceId: uuid("balance_id")
-      .references(() => balance.id, ({ onDelete: "cascade" }))
+      .references(() => balances.id, ({ onDelete: "cascade" }))
       .notNull(),
     toPersonId: uuid("to_person_id")
       .references(() => person.id, ({ onDelete: "cascade" }))
@@ -78,7 +78,7 @@ export const owed = pgTable(
   {
     id: uuid("id").primaryKey().defaultRandom(),
     balanceId: uuid("balance_id")
-      .references(() => balance.id, ({ onDelete: "cascade" }))
+      .references(() => balances.id, ({ onDelete: "cascade" }))
       .notNull(),
     fromPersonId: uuid("from_person_id")
       .references(() => person.id, ({ onDelete: "cascade" }))

@@ -1,10 +1,17 @@
 import { db } from "@/lib/db";
-import { expenses, person } from "@/lib/db/models";
+import { 
+  balances,
+  expenses,
+  owed,
+  owes,
+  person
+} from "@/lib/db/models";
 import { v4 as uuid4 } from "uuid";
 
 jest.mock("uuid", () => ({
   v4: () => "00000000-0000-0000-0000-000000000000",
 }));
+
 
 describe("expenses and expenseSplit models", () => {
   const dateNow = new Date();
@@ -21,7 +28,6 @@ describe("expenses and expenseSplit models", () => {
   });
 
   it("should create an expense transaction but not settled", async() => {
-    
     const [expense] = await db.insert(expenses).values({
       title: "Test Expense - January",
       amount: "1129.15",
@@ -43,5 +49,38 @@ describe("expenses and expenseSplit models", () => {
   afterAll(async() => {
     await db.delete(expenses);
     await db.delete(person);
+  });
+});
+
+describe("balance, owed, and owes models", () => {
+  const personId = uuid4();
+
+  // Clean up before running tests
+  beforeAll(async () => {
+    await db.delete(balances);
+    await db.delete(owes);
+    await db.delete(owed);
+
+    await db.insert(person).values({
+      id: personId,
+      name: "Test Person 2",
+    });
+  });
+
+  it("should create create balance", async () => {
+    const [balance] = await db.insert(balances).values({
+      personId,
+      netBalance: "123.00"
+    }).returning();
+
+    expect(balance).toHaveProperty("id");
+    expect(balance.personId).toBe(personId);
+    expect(balance.netBalance).toBe("123.00");
+  });
+
+  afterAll(async () => {
+    await db.delete(balances);
+    await db.delete(owes);
+    await db.delete(owed);
   });
 });

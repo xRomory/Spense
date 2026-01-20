@@ -69,6 +69,6 @@ npm run dev
 To stop the database container:
 
 ```bash
-docker-compose down
+docker-compose down -v
 ```
 ---
