@@ -18,6 +18,12 @@ CREATE TABLE "person" (
 	"name" varchar(100) NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE "balances" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"person_id" uuid NOT NULL,
+	"net_balance" numeric(12, 2) NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE "expense_splits" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"expense_id" uuid NOT NULL,
@@ -36,8 +42,29 @@ CREATE TABLE "expenses" (
 	"settled_at" timestamp
 );
 --> statement-breakpoint
+CREATE TABLE "owed" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"balance_id" uuid NOT NULL,
+	"from_person_id" uuid NOT NULL,
+	"owed_amount" numeric(12, 2) NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "owes" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"balance_id" uuid NOT NULL,
+	"to_person_id" uuid NOT NULL,
+	"owes_amount" numeric(12, 2) NOT NULL
+);
+--> statement-breakpoint
 ALTER TABLE "group_members" ADD CONSTRAINT "group_members_group_id_groups_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."groups"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "balances" ADD CONSTRAINT "balances_person_id_person_id_fk" FOREIGN KEY ("person_id") REFERENCES "public"."person"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "expense_splits" ADD CONSTRAINT "expense_splits_expense_id_expenses_id_fk" FOREIGN KEY ("expense_id") REFERENCES "public"."expenses"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "expense_splits" ADD CONSTRAINT "expense_splits_person_id_person_id_fk" FOREIGN KEY ("person_id") REFERENCES "public"."person"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "expenses" ADD CONSTRAINT "expenses_paid_by_person_id_fk" FOREIGN KEY ("paid_by") REFERENCES "public"."person"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-CREATE UNIQUE INDEX "expense_person_unique" ON "expense_splits" USING btree ("person_id","expense_id");
+ALTER TABLE "owed" ADD CONSTRAINT "owed_balance_id_balances_id_fk" FOREIGN KEY ("balance_id") REFERENCES "public"."balances"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "owed" ADD CONSTRAINT "owed_from_person_id_person_id_fk" FOREIGN KEY ("from_person_id") REFERENCES "public"."person"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "owes" ADD CONSTRAINT "owes_balance_id_balances_id_fk" FOREIGN KEY ("balance_id") REFERENCES "public"."balances"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "owes" ADD CONSTRAINT "owes_to_person_id_person_id_fk" FOREIGN KEY ("to_person_id") REFERENCES "public"."person"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+CREATE UNIQUE INDEX "expense_person_unique" ON "expense_splits" USING btree ("person_id","expense_id");--> statement-breakpoint
+CREATE UNIQUE INDEX "owed_balance_to_person_unique" ON "owed" USING btree ("balance_id","from_person_id");--> statement-breakpoint
+CREATE UNIQUE INDEX "owe_balance_to_person_unique" ON "owes" USING btree ("balance_id","to_person_id");
