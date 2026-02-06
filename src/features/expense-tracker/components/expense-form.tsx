@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import { Person } from "@/types/person";
+import { SplitType } from "@/types/expenses";
 import { format } from "date-fns";
-import { SplitType } from "@/lib/validators/expenses.schema";
-import { Person } from "@/lib/validators/person.schema";
 import { calculateEqualSplit } from "@/utils/calculations";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
