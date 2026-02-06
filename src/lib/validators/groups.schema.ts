@@ -1,13 +1,8 @@
-export interface Group {
-  id: string;
-  groupName: string;
-  createdAt: string;
-}
+import { z } from "zod";
 
-export interface GroupMember {
-  id: string;
-  groupId: string;
-  name: string;
-  isCreator: boolean;
-  joinedAt: string;
-}
+export const createGroupInputSchema = z.object({
+  groupId: z.string().min(1, "Required"),
+  groupName: z.string().min(1, "Required"),
+});
+
+export type CreateGroupInput = z.infer<typeof createGroupInputSchema>;

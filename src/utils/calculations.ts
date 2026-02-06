@@ -1,5 +1,5 @@
-import { Balance, Expense } from "@/lib/validators/expenses.schema";
-import { Person } from "@/lib/validators/person.schema";
+import { Balance, Expense } from "@/types/expenses";
+import { Person } from "@/types/person";
 
 export function calculateBalances(expenses: Expense[], people: Person[]): Balance[] {
   const balances: Balance[] = people.map(person => ({

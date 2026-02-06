@@ -1,5 +1,7 @@
 "use client";
 
+import { Expense } from "@/types/expenses";
+import { Person } from "@/types/person";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,8 +10,6 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
-import { Expense } from "@/lib/validators/expenses.schema";
-import { Person } from "@/lib/validators/person.schema";
 import { formatCurrency } from "@/utils/calculations";
 import { format } from "date-fns";
 import { Calendar, Check, PhilippinePeso, Trash2, User } from "lucide-react";

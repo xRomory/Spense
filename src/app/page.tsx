@@ -1,7 +1,7 @@
-import HeroSection from "./_sections/hero";
-import FeaturesSection from "./_sections/features";
-import Footer from "./_sections/footer";
-import ActionCards from "./_sections/actions";
+import HeroSection from "./(sections)/hero";
+import FeaturesSection from "./(sections)/features";
+import Footer from "./(sections)/footer";
+import ActionCards from "./(sections)/actions";
 
 export default function Home() {
   return (
