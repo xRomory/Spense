@@ -1,6 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CreateGroupForm } from "@/features/section/components/create-group-form";
-import { JoinGroupForm } from "@/features/section/components/join-group-form";
+import { 
+  CreateGroupForm 
+} from "@/features/create-group/components/create-group-form";
+import { 
+  JoinGroupForm 
+} from "@/features/join-group/components/join-group-form";
 import { Check, Share2, Users } from "lucide-react";
 
 export default function ActionCards() {

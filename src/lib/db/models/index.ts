@@ -2,4 +2,4 @@
 
 export * from "./group.model";
 export * from "./person.model";
-export * from "./expense-tracker.model";
+export * from "@/features/expense-tracker/models/expense-tracker.model";
