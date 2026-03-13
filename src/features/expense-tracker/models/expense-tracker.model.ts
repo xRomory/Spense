@@ -8,7 +8,7 @@ import {
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
-import { person } from "./person.model";
+import { person } from "@/lib/db/models/person.model";
 
 export const splitType = pgEnum("split_type", ["equal", "custom"]);
 

@@ -22,7 +22,7 @@ export const CreateGroupForm = () => {
   const [groupName, setGroupName] = useState("");
   const [username, setUsername] = useState("");
 
-  const handleCreateGroup = (e: React.FormEvent) => {
+  const handleCreateGroup = (e: React.SubmitEvent) => {
     e.preventDefault();
 
     if(!groupName.trim() || !username.trim()) {
