@@ -71,7 +71,7 @@ export const InviteModal = ({ groupId, groupName }: InviteModalProps) => {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Share2 className="h-5 w-5" />
-            Invite People to "(group name)"
+            Invite People to "{groupName}"
           </DialogTitle>
         </DialogHeader>
 

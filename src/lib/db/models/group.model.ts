@@ -8,7 +8,8 @@ import {
 
 export const groups = pgTable("groups", {
   id: uuid("id").primaryKey().defaultRandom(),
-  groupName: varchar({ length: 100 }).notNull(),
+  groupName: varchar("group_name", { length: 100 }).notNull(),
+  inviteCode: varchar("invite_code", { length: 6 }).notNull().unique(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

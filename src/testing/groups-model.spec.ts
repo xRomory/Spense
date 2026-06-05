@@ -6,43 +6,75 @@ jest.mock("uuid", () => ({
   v4: () => "00000000-0000-0000-0000-000000000000",
 }));
 
-describe("groups and groupMembers models", () => {
-  const groupId = uuid4();
+describe("Group Model", () => {
+  // const groupId = uuid4();
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     // Clean up tables before running tests
     await db.delete(groupMembers);
     await db.delete(groups);
   });
 
-  it("should insert and retrieve a group", async () => {
-    const [group] = await db.insert(groups).values({
-      groupName: "Test Group",
-    }).returning();
+  it("should create a group", async () => {
+    const [group] = await db
+      .insert(groups)
+      .values({
+        groupName: "Dorm A",
+        inviteCode: "ABC123",
+      })
+      .returning();
 
-    expect(group).toHaveProperty("id");
-    expect(group.groupName).toBe("Test Group");
+    expect(group.id).toBeDefined();
+    expect(group.groupName).toBe("Dorm A"),
+    expect(group.inviteCode).toBe("ABC123");
   });
 
-  // Initialize group for groupId reference
-  beforeAll(async () => {
-    await db.insert(groups).values({
-      id: groupId,
-      groupName: "Test Group"
-    });
-  }); 
+  it("should create a group member", async () => {
+    const [group] = await db
+      .insert(groups)
+      .values({
+        groupName: "Dorm A",
+        inviteCode: "ABC123",
+      })
+      .returning();
 
-  it("should insert and retrieve a group member", async () => {
-    const [member] = await db.insert(groupMembers).values({
-      groupId,
-      name: "Test User",
-      isCreator: true,
-    }).returning();
-
-    expect(member).toHaveProperty("id");
-    expect(member.groupId).toBe(groupId);
+    const [member] = await db
+      .insert(groupMembers)
+      .values({
+        groupId: group.id,
+        name: "Test User",
+        isCreator: true
+      })
+      .returning();
+    
+    expect(member.id).toBeDefined();
+    expect(member.groupId).toBe(group.id);
     expect(member.name).toBe("Test User");
     expect(member.isCreator).toBe(true);
+  });
+
+  it("should reject member with invalid groupId", async () => {
+    await expect(
+      db.insert(groupMembers).values({
+        groupId: crypto.randomUUID(),
+        name: "Test User",
+        isCreator: false
+      })
+    ).rejects.toThrow();
+  });
+
+  it("should not allow duplicate invite code", async () => {
+    await db.insert(groups).values({
+      groupName: "Dorm A",
+      inviteCode: "ABC123",
+    });
+
+    await expect(
+      db.insert(groups).values({
+        groupName: "Dorm A",
+        inviteCode: "ABC123",
+      })
+    ).rejects.toThrow();
   });
 
   afterAll(async () => {
